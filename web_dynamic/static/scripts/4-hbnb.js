@@ -29,3 +29,31 @@ function createPlaceElement (place) {
   `;
   placesSection.appendChild(placeElement);
 }
+
+document.querySelector('button').addEventListener('click', function () {
+  // Get the list of checked amenities
+  const checkedAmenities = [];
+  document.querySelectorAll('input[type="checkbox"]:checked').forEach(function (checkbox) {
+    checkedAmenities.push(checkbox.getAttribute('data-id'));
+  });
+
+  // Make a POST request to places_search with the list of amenities
+  const data = {
+    amenities: checkedAmenities
+  };
+
+  fetch('http://0.0.0.0:5001/api/v1/places_search', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+    .then(response => response.json())
+    .then(data => {
+      // Handle the response and update the UI with the filtered places
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+});
